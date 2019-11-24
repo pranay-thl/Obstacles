@@ -1,0 +1,42 @@
+{
+  "name": "obstacles",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:js": "mkdir public\\js && uglifyjs view/js/*.js -m -c -o public/js/app.min.js",
+    "build-linux:js": "mkdir -p public/js && uglifyjs view/js/*.js -m -c -o public/js/app.min.js",
+    "build:html": "mkdir public\\html && xcopy /s view\\html public\\html",
+    "build-linux:html": "mkdir -p public/html && cp -a view/html public",
+    "build:css": "mkdir public\\css && cleancss -o public/css/styles.min.css view/css/styles.css",
+    "build-linux:css": "mkdir -p public/css && cleancss -o public/css/styles.min.css view/css/styles.css",
+    "build:folder": "IF EXIST public RMDIR public /S /Q",
+    "build:image": "mkdir public\\img && xcopy /s view\\img public\\img",
+    "build-linux:image": "mkdir -p public/img && cp -a view/img public",
+    "build-windows": "npm run build:folder &&npm run build:image && npm run build:html && npm run build:js && npm run build:css",
+    "build": "npm run build-linux:image && npm run build-linux:html && npm run build-linux:js && npm run build-linux:css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pranay-thl/obstacles.git"
+  },
+  "author": "Pranay Pandey",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "clean-css-cli": "^4.3.0",
+    "jshint": "^2.10.2",
+    "mocha": "^6.2.0",
+    "uglify-js": "^3.6.0"
+  },
+  "bugs": {
+    "url": "https://github.com/pranay-thl/obstacles/issues"
+  },
+  "homepage": "https://github.com/pranay-thl/obstacles#readme"
+}
