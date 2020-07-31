@@ -33,6 +33,14 @@ function contentHandler() {
     var $window = $(window);
     var $submit_button = $("#button_sendmsg");
     var $message = $("#msgInput");
+    var $heading =$("#heading");
+    var username = "User";
+    $.getJSON("/user_data", function(data) {
+        if (data.hasOwnProperty('username')) {
+            username = data.username;
+            $heading.html("Discord Chat: "+data.username);
+        }
+    });
 
     var socket = io();
     socket.on('message', function (msgObj) {
@@ -48,7 +56,8 @@ function contentHandler() {
         addOutGoingMessage(messageText);
         $message.val("");
         let msgObj = {
-            message = messageText
+            username: username,
+            message : messageText
         }
         socket.emit("message",msgObj);
     });

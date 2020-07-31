@@ -34,3 +34,14 @@ body {
   .rounded-lg {
     border-radius: 0.5rem;
   }
+
+.login,
+.image {
+  min-height: 100vh;
+}
+
+.bg-image {
+  background-image: url('/public/img/login.png');
+  background-size: cover;
+  background-position: center center;
+}

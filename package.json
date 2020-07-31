@@ -7,7 +7,7 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:js": "mkdir public\\js && uglifyjs view/js/*.js -m -c -o public/js/app.min.js",
-    "build-linux:js": "mkdir -p public/js && uglifyjs view/js/*.js -m -c -o public/js/app.min.js",
+    "build-linux:js": "mkdir -p public/js && cp -a view/js public",
     "build:html": "mkdir public\\html && xcopy /s view\\html public\\html",
     "build-linux:html": "mkdir -p public/html && cp -a view/html public",
     "build:css": "mkdir public\\css && cleancss -o public/css/styles.min.css view/css/styles.css",
@@ -26,9 +26,15 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongodb": "^3.6.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "serve-favicon": "^2.5.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "when": "^3.7.8"
   },
   "devDependencies": {
     "clean-css-cli": "^4.3.0",

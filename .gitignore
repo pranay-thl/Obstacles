@@ -69,3 +69,4 @@ public
 #packagelock
 package-lock.json
 
+*.DS_Store
