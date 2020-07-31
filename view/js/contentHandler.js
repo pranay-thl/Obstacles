@@ -55,13 +55,13 @@ function contentHandler() {
         let messageText = $message.val();
         if(messageText.trim().length) {
             addOutGoingMessage(messageText);
+            let msgObj = {
+                username: username,
+                message : messageText
+            }
+            socket.emit("message",msgObj);
         }
         $message.val("");
-        let msgObj = {
-            username: username,
-            message : messageText
-        }
-        socket.emit("message",msgObj);
     });
 
     $window.keydown(function (event) {
