@@ -35,7 +35,11 @@ discordio.on('connection', socket => {
 io.on('connection', (socket) => {
     total_clients++;
     socket.username = "User "+total_clients;
-    console.log('a user connected');
+    // let msgObj = {
+    //     username: "Chat",
+    //     message: socket.username + " connected"
+    // }
+    // socket.broadcast.emit("message",msgObj);
     socket.on("message",(msgObj)=>{
         msgObj.username = socket.username;
         socket.broadcast.emit("message",msgObj);
@@ -43,6 +47,17 @@ io.on('connection', (socket) => {
             discordSocket.emit("message",msgObj);
         }
     });
+    socket.on("disconnect",()=>{
+        total_clients--;
+        if(total_clients<0) {
+            total_clients = 0;
+        }
+        // let msgObj = {
+        //     username: "Chat",
+        //     message: socket.username + " disconnected"
+        // }
+        // socket.broadcast.emit("message",msgObj);
+    })
 });
 
 http.listen(port,()=>{
