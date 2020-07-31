@@ -53,7 +53,9 @@ function contentHandler() {
 
     $submit_button.click(() => {
         let messageText = $message.val();
-        addOutGoingMessage(messageText);
+        if(messageText.trim().length) {
+            addOutGoingMessage(messageText);
+        }
         $message.val("");
         let msgObj = {
             username: username,
