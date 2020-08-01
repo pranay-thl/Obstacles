@@ -35,7 +35,11 @@ var localStrategyDiscord = new LocalStrategy({
     }
     let userCheck = await storage.checkLogin(username,password);
     if(userCheck.data) {
-        var user_dict = {"username": username};
+        let role = userCheck.data.role;
+        if(!role) {
+            role = "member";
+        }
+        var user_dict = {username: username, role: role};
         userData[username] = user_dict;
         return cb(null, user_dict);
     }
@@ -133,9 +137,14 @@ io.on('connection', (socket) => {
     // }
     // socket.broadcast.emit("message",msgObj);
     socket.on("message",(msgObj)=>{
-        socket.broadcast.emit("message",msgObj);
-        if(discordSocket && discordSocket.connected) {
-            discordSocket.emit("message",msgObj);
+        if(userData.hasOwnProperty(msgObj.username)) {
+            socket.broadcast.emit("message",msgObj);
+            if(discordSocket && discordSocket.connected) {
+                discordSocket.emit("message",msgObj);
+            }
+        }
+        else{
+            socket.emit("logout");
         }
     });
     socket.on("disconnect",()=>{

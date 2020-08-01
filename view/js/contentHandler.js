@@ -33,33 +33,52 @@ function contentHandler() {
     var $window = $(window);
     var $submit_button = $("#button_sendmsg");
     var $message = $("#msgInput");
-    var $heading =$("#heading");
+    var $heading = $("#heading");
     var username = "User";
-    $.getJSON("/user_data", function(data) {
+    $.getJSON("/user_data", (data) => {
         if (data.hasOwnProperty('username')) {
             username = data.username;
-            $heading.html("Discord Chat: "+data.username);
+            $heading.html("Discord Chat: " + data.username);
+        }
+        else {
+            socket.disconnect();
+            window.location.href = "/logout";
         }
     });
 
     var socket = io();
-    socket.on('message', function (msgObj) {
+    socket.on('message', (msgObj) => {
         let msg = msgObj.message;
-        if(msgObj.username) {
-            msg = msgObj.username+": "+msg; 
+        if (msgObj.username) {
+            msg = msgObj.username + ": " + msg;
         }
-        addIncomingMessage({ message: msg});
+        if ("Notification" in window) {
+            if (Notification.permission === "granted") {
+                var notification = new Notification(msgObj.username, { body: msgObj.message, icon: "https://lh3.googleusercontent.com/_4zBNFjA8S9yjNB_ONwqBvxTvyXYdC7Nh1jYZ2x6YEcldBr2fyijdjM2J5EoVdTpnkA" });
+            }
+            else {
+                Notification.requestPermission().then(function (permission) {
+                    if (permission === "granted") {
+                        var notification = new Notification(msgObj.username, { body: msgObj.message, icon: "https://lh3.googleusercontent.com/_4zBNFjA8S9yjNB_ONwqBvxTvyXYdC7Nh1jYZ2x6YEcldBr2fyijdjM2J5EoVdTpnkA" });
+                    }
+                });
+            }
+        }
+        addIncomingMessage({ message: msg });
     });
-
+    socket.on('logout', () => {
+        socket.disconnect();
+        window.location.href = "/logout";
+    })
     $submit_button.click(() => {
         let messageText = $message.val();
-        if(messageText.trim().length) {
+        if (messageText.trim().length) {
             addOutGoingMessage(messageText);
             let msgObj = {
                 username: username,
-                message : messageText
+                message: messageText
             }
-            socket.emit("message",msgObj);
+            socket.emit("message", msgObj);
         }
         $message.val("");
     });
