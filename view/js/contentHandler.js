@@ -45,7 +45,22 @@ function contentHandler() {
             window.location.href = "/logout";
         }
     });
-
+    $("#channelgeneral").click(()=>{
+        $("#channelgeneral").removeClass("list-group-item-light");
+        $("#channelofficer").addClass("list-group-item-light");
+        $("#channelofficer").removeClass("text-white");
+        $("#channelgeneral").addClass("text-white");
+        $("#channelofficer").removeClass("active");
+        $("#channelgeneral").addClass("active");
+    });
+    $("#channelofficer").click(()=>{
+        $("#channelofficer").removeClass("list-group-item-light");
+        $("#channelgeneral").addClass("list-group-item-light");
+        $("#channelgeneral").removeClass("text-white");
+        $("#channelofficer").addClass("text-white");
+        $("#channelgeneral").removeClass("active");
+        $("#channelofficer").addClass("active");
+    });
     var socket = io();
     socket.on('message', (msgObj) => {
         let msg = msgObj.message;
